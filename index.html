@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notruf Hamburg</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqk1w2/knoG80kXw/8kgX2O/W/McDoOn8zK8/AM5v/z+yN0n+ZfpFiK/S9vH/0/5f+r9Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    /* ... (gleicher CSS-Code wie im vorherigen Beispiel) ... */
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1><i class="fas fa-phone-alt"></i> Notruf Hamburg City Life RP</h1>
+    <form id="notruf-form">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" placeholder="Dein Name" required>
+      </div>
+      <div class="form-group">
+        <label for="location">Standort:</label>
+        <input type="text" id="location" name="location" placeholder="Dein Standort" required>
+      </div>
+      <div class="form-group">
+        <label for="message">Beschreibung:</label>
+        <textarea id="message" name="message" rows="5" placeholder="Beschreibe den Notfall" required></textarea>
+      </div>
+      <button type="submit">Notruf absetzen</button>
+    </form>
+    <div class="footer">
+      <p>Dieser Notruf ist nur für den Roblox-Server. Bei echten Notfällen bitte die **112** wählen.</p>
+    </div>
+  </div>
+
+  <script>
+    const notrufForm = document.getElementById('notruf-form');
+
+    notrufForm.addEventListener('submit', (event) => {
+      event.preventDefault(); // Verhindere das Standard-Formular-Senden
+
+      const name = document.getElementById('name').value;
+      const location = document.getElementById('location').value;
+      const message = document.getElementById('message').value;
+
+      // Hier musst du den Discord-Webhook-URL einfügen:
+      const webhookURL = 'https://discord.com/api/webhooks/1320415988436697130/oxBwe4fnL_qGmsCCXdws7MoepqVFq28R6JfKHtJTd9lt1ERdvvZfSC7M4fWAQ4pXWPsK';
+
+      // Erstelle die Nachricht für Discord:
+      const messageData = {
+        content: `**Notruf von:** ${name}\n**Standort:** ${location}\n**Beschreibung:** ${message}`
+      };
+
+      // Sende die Nachricht an den Discord-Server:
+      fetch(webhookURL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(messageData)
+      })
+      .then(response => {
+        // Wenn die Nachricht erfolgreich gesendet wurde, zeige eine Bestätigung an:
+        alert('Notruf erfolgreich gesendet!');
+        notrufForm.reset(); // Setze das Formular zurück
+      })
+      .catch(error => {
+        // Wenn ein Fehler auftritt, zeige eine Fehlermeldung an:
+        console.error('Fehler beim Senden des Notrufs:', error);
+        alert('Fehler beim Senden des Notrufs. Bitte versuche es später erneut.');
+      });
+    });
+  </script>
+</body>
+</html>
+
